@@ -16,4 +16,4 @@ Python script that takes a file containing an unscaled reflectivity profile from
 it to match the MaxEnt data scaling. Input file name can be changed on the first lined and 
 output is named reflectivityScaled.
 
-Folder contains example reflectivityl9Average
+Folder contains example reflectivityl9Average and data
