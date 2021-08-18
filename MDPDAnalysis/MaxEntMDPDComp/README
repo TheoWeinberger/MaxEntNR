@@ -1,0 +1,19 @@
+##########################################################################################
+ # @file rescale.py                                                 
+ # @brief Code to rescale the reflectivity data from the MDPD simulations to match up with 
+ # ISIS data and MaxEnt reconstructions 
+##########################################################################################
+ #
+ # @author Theo Weinberger
+ # @version 1.0
+ # @date 2021-08-03
+ # 
+ # @copyright Copyright (c) 2021
+ #
+##########################################################################################
+
+Python script that takes a file containing an unscaled reflectivity profile from sldCalc.py and rescales
+it to match the MaxEnt data scaling. Input file name can be changed on the first lined and 
+output is named reflectivityScaled.
+
+Folder contains example reflectivityl9Average

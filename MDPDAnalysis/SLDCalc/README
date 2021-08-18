@@ -1,0 +1,22 @@
+##########################################################################################
+ # @file sldCalc.py                                                 
+ # @brief Code to calculate the SLD value from bead distribution of MDPD simulations.
+ # requires .dat files for the substrate (E), A (fluorocarbon), B (linker), C (side chain), 
+ # W (water). .dat files contain z index and last 3 simulation time steps of the data
+##########################################################################################
+ #
+ # @author Theo Weinberger
+ # @version 1.0
+ # @date 2021-08-03
+ # 
+ # @copyright Copyright (c) 2021
+ #
+##########################################################################################
+
+Folder must contain .dat files named E, A, B, C and W corresponding to the relevant species
+and their z index. Runnin the sldCalc will average over the last 3 simulation steps and 
+calculate the volumetric normalised SLD as well as the 4 step rolling average for the species
+and the SLDs for that - this is because the MaxEnt algorithm has a resolution of ~ 4nm while 
+the MDPD simulation has a 1nm resolution. 
+
+Folder contains example MDPD data

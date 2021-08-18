@@ -1,0 +1,13 @@
+##########################################################################################
+ # @file multirun.sh                                                 
+ # @brief BASH script used to run multiple iterations of the MaxEnt script to allow for 
+ # parametric testing.
+##########################################################################################
+ #
+ # @author Theo Weinberger
+ # @version 1.0
+ # @date 2021-07-08
+ # 
+ # @copyright Copyright (c) 2021
+ #
+##########################################################################################

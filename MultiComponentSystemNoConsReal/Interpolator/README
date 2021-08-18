@@ -1,0 +1,55 @@
+****************************************************************************************
+ * 
+ * file InterpolatorClass.cpp
+ * author Theo Weinberger
+ * 
+ ******************************************************************************************
+ * 
+ * brief C++ class to run interpolation script to interpolate data so it is on a uniform line
+ * uses the cubic spline method from the ALGLIB package. Often input data is has a non uniform
+ * reflectivity scale and this serves to fix it.
+ * 
+ * The number of segments that it is divided into is specified by the user/settings file
+ * 
+ * This program also uses the following packages
+ *
+ * For matrix manipulation: Armadillo from http://arma.sourceforge.net/docs.html
+ *
+ *    (1)  Conrad Sanderson and Ryan Curtin.
+ *         Armadillo: a template-based C++ library for linear algebra.
+ *         Journal of Open Source Software, Vol. 1, pp. 26, 2016.
+ *
+ *    (2)  Conrad Sanderson and Ryan Curtin.
+ *         A User-Friendly Hybrid Sparse Matrix Class in C++.
+ *         Lecture Notes in Computer Science (LNCS), Vol. 10931, pp. 422-430, 2018.
+ * 
+ * For further Matrix manipulation and cubic spline: ALGLIB from www.alglib.net, Sergey Bochkanov
+ * 
+ * For accessing settings files: libconfig from http://hyperrealm.github.io/libconfig/
+ * 
+ *****************************************************************************************
+ *
+ * version 1.0
+ * date 2021-05-01
+ * 
+ * copyright Copyright (c) 2021
+ * 
+ *****************************************************************************************
+
+ Most real data comes with a non-uniform reflectivity axis - to use the MaxEnt method and DFTs
+ the data must be interpolated onto a uniform reflectivity axis. This script uses the ALGLIB 
+ cubic spline interpolation package to interpolate the data onto a uniform axis.
+
+ The settings for this script can be specified in settings.cfg.
+
+ The number of discrete points that the data is outputted at is determined by sectionsOut. And the Q range
+ over which these are is determined by rangeTimes where the final range is rangeTimes x range of input data. 
+
+ Input data may contain noticeable errors due to the resolution limit of the experimental apparatus
+ which will introduce a sinc^2 modulation to the data. To account for this accountError can be set to 
+ true and the default range will be used to calculate the modulating sinc. If the absolute error of the 
+ experimental apparatus is used then it can be specified by setting errorKnown to true and defining 
+ resLimit.
+
+ If the error is accounted for, the output data is cropped before small values of the sinc function are 
+ divided out of the data. 

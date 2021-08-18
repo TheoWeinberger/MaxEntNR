@@ -1,0 +1,42 @@
+ ****************************************************************************************
+ *
+ * @author Theo Weinberger
+ * @version 1.0
+ * @date 2021-08-11
+ * 
+ * @copyright Copyright (c) 2021
+ *
+ ****************************************************************************************
+
+This project contains multiple scripts used to run MaxEnt inversions of NR data. It also contains 
+the subsequent data analysis scripts used to analyse MaxEnt data as well as MDPD data for comparison.
+
+For indepth descriptions please see the relevant README files in each folder.
+
+All c++ files come with the makefile required to generate the working executable file.
+
+MaxEnt - The script used to run one-component MaxEnt inversions
+
+MultiComponentSystem - The script used to run multicomponent MaxEnt inversions using algorithm I. 
+This version of the script removes the 1/q^4 dependence and is best suited to working with simulated data.
+
+MultiComponentSystemNoCons - The script used to run multicomponent MaxEnt inversions using algorithm II. 
+This version of the script removes the 1/q^4 dependence and is best suited to working with simulated data.
+
+MultiComponentSystemReal - The script used to run multicomponent MaxEnt inversions using algorithm I. 
+This version of the script does not remove the 1/q^4 dependence and is best suited to working with real data.
+
+MultiComponentSystemNoConsReal - The script used to run multicomponent MaxEnt inversions using algorithm II. 
+This version of the script does not remove the 1/q^4 dependence and is best suited to working with real data.
+
+BASH - contains a simple BASH script used to run multiple iterations of the MaxEnt inversions. This was used
+to perform parametric testing.
+
+DataAnalysis - This script is used to average over multiple runs so that analysis at a given parametric 
+configuration can be performed.
+
+MDPDAnalysis/SLDCalc - A python script used to convert MDPD bead density profiles into an SLD profiles.
+It also averages over steps to provide a reasonable comparison with MaxEnt data.
+
+MDPDAnalysis/MaxEntMDPDComp - A script to rescale the MDPD profiles from SLDCalc so they can be compared 
+against MaxEnt data.

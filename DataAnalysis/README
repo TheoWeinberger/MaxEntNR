@@ -1,0 +1,22 @@
+##########################################################################################
+ # @file average.py                                                 
+ # @brief Code to perform basic data analysis. The standard deviation and mean values 
+ # are calculared for the reduced chi squared, minimum reduced chi squared, test value
+ # and minimum test value and appended to the averages file. Input data should be in 
+ # convData file
+##########################################################################################
+ #
+ # @author Theo Weinberger
+ # @version 1.0
+ # @date 2021-07-09
+ # 
+ # @copyright Copyright (c) 2021
+ #
+##########################################################################################
+
+Folder should contain data to be averaged in a file named convData. The columns should be ordered
+as reduced chi squared, minimum reduced chi squared, test value and minimum test value. Running 
+the script outputs the data to a file names averages which contains the mean and standard deviation
+of all these quantities in the same order. 
+
+Folder contains an example convData file

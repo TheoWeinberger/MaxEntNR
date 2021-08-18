@@ -1,0 +1,109 @@
+ ****************************************************************************************
+ * 
+ * file NewtonMain.cpp
+ * author Theo Weinberger 
+ * 
+ ****************************************************************************************
+ *
+ * brief Chisquared minimiser that employs the Newton method of optimisation to fit 
+ * a partially fit initial profile to a final SLD profile. This version includes the
+ * 1/q^4 dependence in the data.
+ * It reconstructs the SLD profile from the reflectivity spectrum method using the 
+ * Fourier form of the reflectivity relationship which is defined to be
+ * 
+ *          R[Q] = \frac{1}{Q^4} * |FFT(SLD)[Q]*[1-exp{-Q*I*(2*PI/totalDepth)}] +
+ *                           SLD[totalDepth - 1] - SLD[0]|^2
+ * 
+ * The Newton method iteratively minimises the fit within a local region where 
+ * it assumes a quadratic fit where each step follows the relation
+ * 
+ *                      SLD{_n+1} = SLD_n - H^{-1} \nabla C
+ * 
+ *      (1) Avriel, Mordecai (2003). Nonlinear Programming: 
+ *          Analysis and Methods. Dover Publishing. 
+ *          ISBN 0-486-43227-0.
+ * 
+ * For matrix manipulation: Armadillo from http://arma.sourceforge.net/docs.html
+ *
+ *    (1)  Conrad Sanderson and Ryan Curtin.
+ *         Armadillo: a template-based C++ library for linear algebra.
+ *         Journal of Open Source Software, Vol. 1, pp. 26, 2016.
+ *
+ *    (2)  Conrad Sanderson and Ryan Curtin.
+ *         A User-Friendly Hybrid Sparse Matrix Class in C++.
+ *         Lecture Notes in Computer Science (LNCS), Vol. 10931, pp. 422-430, 2018.
+ *
+ * For discrete fast fourier transforms: FFTW3 from http://www.fftw.org/
+ *
+ *    (1) Frigo M, Johnson SG (1998) FFTW: An adaptive software architecture for the FFT.
+ *        In: Proceedings IEEE international conference acoustics, speech, and signal
+ *        processing (ICASSP), 3, pp 13811384
+ *
+ *
+ *    (2) Frigo M (1999) A fast Fourier transform compiler.
+ *        In Proceedings of the ACM SIGPLAN 1999 conference on programming language
+ *        design and implementation (PLDI 1999). ACM, New York, pp 169180
+ *
+ *    (3) Frigo M, Johnson SG (2005) The design and implementation of FFTW3.
+ *        Proceedings of the IEEE 93(2):216231
+ *
+ * For accessing settings files: libconfig from http://hyperrealm.github.io/libconfig/
+ * 
+ ****************************************************************************************
+ * 
+ * version 2.0
+ * date 2021-06-30
+ * 
+ * copyright Copyright (c) 2021
+ * 
+ ****************************************************************************************
+
+This class contains a chisquared minimiser that fits a semi-fitted profile (either initialised
+or determined by the MaxEnt method) using the Newton method of optimisation.
+
+System controls are determined in the settings.cfg file.
+
+The initial charge profiles should be named charge{i}Chi, where {i} is the species number.
+
+The component variables should be specified in the Components section where the number of substances 
+and their SLDs must be specified. The total for each species is determined by the initial charge
+data that is used.
+
+Substrate and Propogation lengths and sld values should specified in the substrate and propogation 
+sub-sections of the settings. Substrate/Propagation lengths can be specified either as an integer 
+corresponding to number of indeces, or in terms of the actual length in Angstroms. 
+
+The input data can be cropped by specifying qOffset/CutOff and again can be specified in array 
+indees or in terms of real world units in A^-1. 
+
+If real world values are being used realWorldScaling must be set to true
+
+numIterations controls he number of iterations
+
+zeroLevel controls the minimum threshold for the charge
+
+minVariance controls the minimum variance within the system
+
+dataScale controls the scaling of the maximum value of the input data which can be used to scale the 
+chi squared to some degree
+
+Armijo damping can be imposed by setting useDamping to True
+
+If damping is used then  the gamma and alpha parameters must be set which control backtracing behaviour
+
+gammaInit - Step scaling to Newton algorithm should be ([0:1] but I find large scalings seem to work and speed it up)
+gammaFactor - Scaling factor for Armijo backtracing
+alphaInit - Multiplicative factor for Armijo backtracing
+alphaFactor - Scaling factor for Armijo backtracing
+
+System contraints such as smoothing can be controlled using smoothIncrement and/or smoothProfile. 
+smoothIncrement allows only steps that produce a smooth profile to occur. smoothProfile smooth the profile
+but averaging over neighbours which are producing spikes in the data and occurs every smoothInterval steps.
+
+Small values of the charge can be forced to zero by setting forceZero to true. fracMax controls the
+threshold for zeroing and forceInterval the gap between zeroing.
+
+SLD normalisation is controlled by using either volumetricNormalisation or by bounding the SLD
+to user specified values. If boundSLD is used sldMinBound and sldMaxBound must be defined.
+
+error specifies whether true errors are being used
